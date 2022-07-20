@@ -13,4 +13,6 @@ using BcParksMvc.Models;
         }
 
         public DbSet<BcParksMvc.Models.Park> Park { get; set; } = default!;
+
+        public DbSet<BcParksMvc.Models.ParkType>? ParkType { get; set; }
     }
