@@ -1,4 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<BcParksMvcContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BcParksMvcContext") ?? throw new InvalidOperationException("Connection string 'BcParksMvcContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -22,6 +26,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Parks}/{action=Index}/{id?}");
 
 app.Run();
