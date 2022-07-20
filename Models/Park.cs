@@ -9,5 +9,7 @@ namespace BcParksMvc.Models
         public int AreaHa { get; set; }
         public int AreaAcres { get; set; }
         public int EstablishedYear { get; set; }
+
+        public ICollection<ParkType> ParkTypes { get; set; }
     }
 }
