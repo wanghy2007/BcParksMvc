@@ -8,6 +8,6 @@ namespace BcParksMvc.Models
         public string Name { get; set; }
         public string Abbreviation { get; set; }
 
-        public ICollection<Park> Parks { get; set; }
+        public ICollection<Park>? Parks { get; set; }
     }
 }
