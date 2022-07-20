@@ -21,9 +21,9 @@ namespace BcParksMvc.Controllers
         // GET: ParkTypes
         public async Task<IActionResult> Index()
         {
-              return _context.ParkType != null ? 
-                          View(await _context.ParkType.ToListAsync()) :
-                          Problem("Entity set 'BcParksMvcContext.ParkType'  is null.");
+            return _context.ParkType != null ?
+                        View(await _context.ParkType.ToListAsync()) :
+                        Problem("Entity set 'BcParksMvcContext.ParkType'  is null.");
         }
 
         // GET: ParkTypes/Details/5
@@ -55,7 +55,7 @@ namespace BcParksMvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] ParkType parkType)
+        public async Task<IActionResult> Create([Bind("Id,Name,Abbreviation")] ParkType parkType)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace BcParksMvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] ParkType parkType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abbreviation")] ParkType parkType)
         {
             if (id != parkType.Id)
             {
@@ -149,14 +149,14 @@ namespace BcParksMvc.Controllers
             {
                 _context.ParkType.Remove(parkType);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ParkTypeExists(int id)
         {
-          return (_context.ParkType?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.ParkType?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
