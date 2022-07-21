@@ -15,6 +15,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     SeedParkTypes.Initialize(services);
+    SeedParks.Initialize(services);
 }
 
 // Configure the HTTP request pipeline.
