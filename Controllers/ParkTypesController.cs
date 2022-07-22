@@ -19,7 +19,7 @@ namespace BcParksMvc.Controllers
         }
 
         // GET: ParkTypes
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchByName)
         {
             // sorting
             ViewData["NameSortParam"] = sortOrder == "name_desc" ? "name_asc" : "name_desc";
@@ -34,6 +34,13 @@ namespace BcParksMvc.Controllers
                 "abbreviation_desc" => parkTypes.OrderByDescending(pt => pt.Abbreviation),
                 _ => parkTypes.OrderBy(pt => pt.Name)
             };
+
+            // search by name
+            ViewData["CurrentSearchByName"] = searchByName;
+            if (!string.IsNullOrEmpty(searchByName))
+            {
+                parkTypes = parkTypes.Where(pt => pt.Name.Contains(searchByName));
+            }
 
             return View(await parkTypes.AsNoTracking().ToListAsync());
         }

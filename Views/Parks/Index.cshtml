@@ -9,26 +9,41 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchByName" value="@ViewData["CurrentSearchByName"]" />
+            <input type="submit" value="Search" class="btn btn-default btn-outline-dark" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]"
+                    asp-route-searchByName="@ViewData["CurrentSearchByName"]">
                     @Html.DisplayNameFor(model => model.Name)
                 </a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["AreaHaSortParam"]">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AreaHaSortParam"]"
+                    asp-route-searchByName="@ViewData["CurrentSearchByName"]">
                     @Html.DisplayNameFor(model => model.AreaHa)
                 </a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["AreaAcresSortParam"]">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AreaAcresSortParam"]"
+                    asp-route-searchByName="@ViewData["CurrentSearchByName"]">
                     @Html.DisplayNameFor(model => model.AreaAcres)
                 </a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["EstablishedYearSortParam"]">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EstablishedYearSortParam"]"
+                    asp-route-searchByName="@ViewData["CurrentSearchByName"]">
                     @Html.DisplayNameFor(model => model.EstablishedYear)
                 </a>
             </th>
