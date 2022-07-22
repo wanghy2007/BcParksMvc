@@ -13,41 +13,50 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">
+                    @Html.DisplayNameFor(model => model.Name)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AreaHa)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AreaHaSortParam"]">
+                    @Html.DisplayNameFor(model => model.AreaHa)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AreaAcres)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AreaAcresSortParam"]">
+                    @Html.DisplayNameFor(model => model.AreaAcres)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EstablishedYear)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EstablishedYearSortParam"]">
+                    @Html.DisplayNameFor(model => model.EstablishedYear)
+                </a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AreaHa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AreaAcres)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstablishedYear)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AreaHa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AreaAcres)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstablishedYear)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

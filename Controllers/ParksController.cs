@@ -19,11 +19,29 @@ namespace BcParksMvc.Controllers
         }
 
         // GET: Parks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-              return _context.Park != null ? 
-                          View(await _context.Park.ToListAsync()) :
-                          Problem("Entity set 'BcParksMvcContext.Park'  is null.");
+            // sorting
+            ViewData["NameSortParam"] = sortOrder == "name_desc" ? "name_asc" : "name_desc";
+            ViewData["AreaHaSortParam"] = sortOrder == "areaHa_desc" ? "areaHa_asc" : "areaHa_desc";
+            ViewData["AreaAcresSortParam"] = sortOrder == "areaAcres_desc" ? "areaAcres_asc" : "areaAcres_desc";
+            ViewData["EstablishedYearSortParam"] = sortOrder == "establishedYear_desc" ? "establishedYear_asc" : "establishedYear_desc";
+            var parks = from p in _context.Park
+                        select p;
+            parks = sortOrder switch
+            {
+                "name_asc" => parks.OrderBy(p => p.Name),
+                "name_desc" => parks.OrderByDescending(p => p.Name),
+                "areaHa_asc" => parks.OrderBy(p => p.AreaHa),
+                "areaHa_desc" => parks.OrderByDescending(p => p.AreaHa),
+                "areaAcres_asc" => parks.OrderBy(p => p.AreaAcres),
+                "areaAcres_desc" => parks.OrderByDescending(p => p.AreaAcres),
+                "establishedYear_asc" => parks.OrderBy(p => p.EstablishedYear),
+                "establishedYear_desc" => parks.OrderByDescending(p => p.EstablishedYear),
+                _ => parks.OrderBy(p => p.Name)
+            };
+
+            return View(await parks.AsNoTracking().ToListAsync());
         }
 
         // GET: Parks/Details/5
@@ -149,14 +167,14 @@ namespace BcParksMvc.Controllers
             {
                 _context.Park.Remove(park);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ParkExists(int id)
         {
-          return (_context.Park?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Park?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
