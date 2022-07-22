@@ -19,11 +19,23 @@ namespace BcParksMvc.Controllers
         }
 
         // GET: ParkTypes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            return _context.ParkType != null ?
-                        View(await _context.ParkType.ToListAsync()) :
-                        Problem("Entity set 'BcParksMvcContext.ParkType'  is null.");
+            // sorting
+            ViewData["NameSortParam"] = sortOrder == "name_desc" ? "name_asc" : "name_desc";
+            ViewData["AbbreviationSortParam"] = sortOrder == "abbreviation_desc" ? "abbreviation_asc" : "abbreviation_desc";
+            var parkTypes = from pt in _context.ParkType
+                            select pt;
+            parkTypes = sortOrder switch
+            {
+                "name_asc" => parkTypes.OrderBy(pt => pt.Name),
+                "name_desc" => parkTypes.OrderByDescending(pt => pt.Name),
+                "abbreviation_asc" => parkTypes.OrderBy(pt => pt.Abbreviation),
+                "abbreviation_desc" => parkTypes.OrderByDescending(pt => pt.Abbreviation),
+                _ => parkTypes.OrderBy(pt => pt.Name)
+            };
+
+            return View(await parkTypes.AsNoTracking().ToListAsync());
         }
 
         // GET: ParkTypes/Details/5
