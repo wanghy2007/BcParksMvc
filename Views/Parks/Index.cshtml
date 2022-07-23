@@ -1,4 +1,4 @@
-@model IEnumerable<BcParksMvc.Models.Park>
+@model PaginatedList<BcParksMvc.Models.Park>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,7 +13,7 @@
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
-            Find by name: <input type="text" name="SearchByName" value="@ViewData["CurrentSearchByName"]" />
+            Find by name: <input type="text" name="SearchByName" value="@ViewData["CurrentSearch"]" />
             <input type="submit" value="Search" class="btn btn-default btn-outline-dark" /> |
             <a asp-action="Index">Back to Full List</a>
         </p>
@@ -25,26 +25,26 @@
         <tr>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]"
-                    asp-route-searchByName="@ViewData["CurrentSearchByName"]">
-                    @Html.DisplayNameFor(model => model.Name)
+                    asp-route-currentSearch="@ViewData["CurrentSearch"]">
+                    Park name
                 </a>
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["AreaHaSortParam"]"
-                    asp-route-searchByName="@ViewData["CurrentSearchByName"]">
-                    @Html.DisplayNameFor(model => model.AreaHa)
+                    asp-route-currentSearch="@ViewData["CurrentSearch"]">
+                    Area (ha)
                 </a>
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["AreaAcresSortParam"]"
-                    asp-route-searchByName="@ViewData["CurrentSearchByName"]">
-                    @Html.DisplayNameFor(model => model.AreaAcres)
+                    asp-route-currentSearch="@ViewData["CurrentSearch"]">
+                    Area (acres)
                 </a>
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["EstablishedYearSortParam"]"
-                    asp-route-searchByName="@ViewData["CurrentSearchByName"]">
-                    @Html.DisplayNameFor(model => model.EstablishedYear)
+                    asp-route-currentSearch="@ViewData["CurrentSearch"]">
+                    Established
                 </a>
             </th>
             <th></th>
@@ -75,3 +75,19 @@
         }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+    asp-route-currentSearch="@ViewData["CurrentSearch"]" asp-route-pageNumber="@(Model.PageNumber - 1)"
+    class="btn btn-default btn-outline-dark @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index" asp-route-sortOrder="@ViewData["CurrentSort"]"
+    asp-route-currentSearch="@ViewData["CurrentSearch"]" asp-route-pageNumber="@(Model.PageNumber + 1)"
+    class="btn btn-default btn-outline-dark @nextDisabled">
+    Next
+</a>
