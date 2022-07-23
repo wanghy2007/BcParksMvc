@@ -19,9 +19,10 @@ namespace BcParksMvc.Controllers
         }
 
         // GET: Parks
-        public async Task<IActionResult> Index(string sortOrder, string searchByName)
+        public async Task<IActionResult> Index(string sortOrder, string searchByName, string currentSearch, int? pageNumber)
         {
             // sorting
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParam"] = sortOrder == "name_desc" ? "name_asc" : "name_desc";
             ViewData["AreaHaSortParam"] = sortOrder == "areaHa_desc" ? "areaHa_asc" : "areaHa_desc";
             ViewData["AreaAcresSortParam"] = sortOrder == "areaAcres_desc" ? "areaAcres_asc" : "areaAcres_desc";
@@ -42,13 +43,22 @@ namespace BcParksMvc.Controllers
             };
 
             // search by name
-            ViewData["CurrentSearchByName"] = searchByName;
-            if (!string.IsNullOrEmpty(searchByName))
+            currentSearch = searchByName ?? currentSearch;
+            ViewData["CurrentSearch"] = currentSearch;
+            if (!string.IsNullOrEmpty(currentSearch))
             {
-                parks = parks.Where(p => p.Name.Contains(searchByName));
+                parks = parks.Where(p => p.Name.Contains(currentSearch));
             }
 
-            return View(await parks.AsNoTracking().ToListAsync());
+            // pagination
+            if (!string.IsNullOrEmpty(searchByName))
+            {
+                pageNumber = 1;
+            }
+            int pageSize = 10;
+            var paginatedList = await PaginatedList<Park>.CreateAsync(parks.AsNoTracking(), pageNumber ?? 1, pageSize);
+
+            return View(paginatedList);
         }
 
         // GET: Parks/Details/5
